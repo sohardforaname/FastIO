@@ -2,49 +2,50 @@
 #pragma once
 
 #include <vector>
-#include <cctype>
+#include "type.h"
 #include <cstdio>
+#include <cstring>
 #include <tuple>
 
 using namespace std;
 
 typedef long long ll;
-typedef vector<int> vi;
-typedef vector<vector<int>> vvi;
-typedef pair<int, int> pii;
-typedef pair<int, ll> pil;
-typedef pair<ll, int> pli;
-typedef pair<ll, ll> pll;
-typedef vector<pii> vpii;
+
+const double pow10minus[] = {
+    1e-1, 1e-2, 1e-3, 1e-4, 1e-5, 1e-6, 1e-7, 1e-8, 1e-9, 1e-10,
+    1e-11, 1e-12, 1e-13, 1e-14, 1e-15, 1e-16, 1e-17, 1e-18, 1e-19, 1e-20
+};
 
 class ReadIOBase {
 private:
     static const size_t MAXBUF = 1 << 23;
-    char buf[MAXBUF], *fh, *ft;
-    int f, iserr;
-    inline void checkbuf()
+    char buf[MAXBUF + 1], *fh, *ft;
+    bool f;
+    int iserr;
+
+    inline void readbuf()
     {
-        if (fh == ft) {
-            fh = buf;
-            *fh = 0;
-            ft = fh + fread(buf, 1, MAXBUF, stdin);
+        fh = buf;
+        *fh = 0;
+        ft = fh + fread(buf, 1, MAXBUF, stdin);
+        if (ft == fh)
             iserr = ferror(stdin);
-        }
     }
 
     inline char gc()
     {
-        checkbuf();
         return *fh++;
     }
 
     inline char seekch()
     {
-        checkbuf();
+        if (*fh)
+            return *fh;
+        readbuf();
         return *fh;
     }
 
-    void skipspace()
+    inline void skipspace()
     {
         while (!isgraph(seekch()))
             gc();
@@ -58,18 +59,20 @@ public:
         skipspace();
         char c = seekch();
         if (c == '+' || c == '-') {
-            f = (c == '+' ? 1 : -1);
+            f = (c == '+');
             c = gc();
             if (!isdigit(seekch()))
                 return 0;
             x = 0;
-        } else if (isdigit(c))
+        } 
+        else if (isdigit(c))
             x = gc() - '0';
         else
             return 0;
         while (isdigit(seekch()))
-            x = x * 10 + gc() - '0';
-        x *= f;
+            x = (x << 3) + (x << 1) + gc() - '0';
+        if (!f)
+            x = ~x + 1;
         return 1;
     }
 
@@ -84,20 +87,35 @@ public:
         gc();
         if (!isdigit(seekch()))
             return 0;
-        double p = 0.1;
+        const double* p = pow10minus;
         while (isdigit(seekch()))
-            x += p * (gc() - '0') * f, p *= 0.1;
+            f ? x += *(p++) * (gc() - '0') : x -= *(p++) * (gc() - '0');
         return 1;
     }
+
+#define cpy(a, b, c)            \
+    memcpy((a), (b), (c) - (b));\
+    (a) += (c) - (b);
 
     inline int _read(char* s)
     {
         skipspace();
-        while (isgraph(seekch()))
-            *(s++) = gc();
+        char* ptr = fh;
+        while (isgraph(seekch())) {
+            gc();
+            if (*fh)
+                continue;
+            cpy(s, ptr, fh)
+            readbuf();
+            ptr = fh;
+        };
+        if (fh != ptr) {
+            cpy(s, ptr, fh);
+        }
         *s = 0;
         return 1;
     }
+#undef cpy(a,b,c)
 
     inline int _read(char& ch)
     {
@@ -111,9 +129,10 @@ public:
     }
 
     ReadIOBase()
-        : ft(nullptr)
-        , fh(nullptr)
+        : ft(buf)
+        , fh(buf)
     {
+        buf[0] = buf[MAXBUF] = 0;
     }
 };
 class WriteIOBase {
