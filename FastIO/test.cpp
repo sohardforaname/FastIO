@@ -163,8 +163,8 @@ int main(int argc, char** argv)
     /*if (argc != 2)
         return printf("error argc: %d", argc);
     int tsc = atoi(argv[1]);*/
-    int tsc = 1;
-    freopen("D:\\code\\vs\\C++_code\\FastIO\\data\\in1.txt", "r", stdin);
+    int tsc = 5;
+    freopen("D:\\code\\vs\\C++_code\\FastIO\\data\\in5.txt", "r", stdin);
 
     int t;
     if (multi)
