@@ -43,8 +43,9 @@ void test3()
 {
     int len = 1e4, sz = 1e3;
 #ifdef useio
-    for (int i = 1; i <= len; ++i)
+    for (int i = 1; i <= len; ++i) {
         suct += io(s);
+    }
 #else
     for (int i = 1; i <= len; ++i) {
         suct += scanf("%s", s);
@@ -172,7 +173,7 @@ int main(int argc, char** argv)
     /*if (argc != 2)
         return printf("error argc: %d", argc);
     int tsc = atoi(argv[1]);*/
-    int tsc = 3;
+    int tsc = 1;
     freopen(path[tsc], "r", stdin);
 
     int t;

@@ -3,21 +3,13 @@
 
 #include <vector>
 #include "type.h"
-//#include <cctype>
 #include <cstdio>
+#include <cstring>
 #include <tuple>
-#include <nmmintrin.h>
 
 using namespace std;
 
 typedef long long ll;
-typedef vector<int> vi;
-typedef vector<vector<int>> vvi;
-typedef pair<int, int> pii;
-typedef pair<int, ll> pil;
-typedef pair<ll, int> pli;
-typedef pair<ll, ll> pll;
-typedef vector<pii> vpii;
 
 const double pow10minus[] = {
     1e-1, 1e-2, 1e-3, 1e-4, 1e-5, 1e-6, 1e-7, 1e-8, 1e-9, 1e-10,
@@ -27,14 +19,9 @@ const double pow10minus[] = {
 class ReadIOBase {
 private:
     static const size_t MAXBUF = 1 << 23;
-    char buf[MAXBUF], *fh, *ft;
+    char buf[MAXBUF + 1], *fh, *ft;
     bool f;
     int iserr;
-
-    inline bool isend()
-    {
-        return fh == ft;
-    }
 
     inline void readbuf()
     {
@@ -47,15 +34,14 @@ private:
 
     inline char gc()
     {
-        if (isend())
-            readbuf();
         return *fh++;
     }
 
     inline char seekch()
     {
-        if (isend())
-            readbuf();
+        if (*fh)
+            return *fh;
+        readbuf();
         return *fh;
     }
 
@@ -107,14 +93,9 @@ public:
         return 1;
     }
 
-    /*inline int _read(char* s)
-    {
-        skipspace();
-        while (isgraph(seekch()))
-            *(s++) = gc();
-        *s = 0;
-        return 1;
-    }*/
+#define cpy(a, b, c)            \
+    memcpy((a), (b), (c) - (b));\
+    (a) += (c) - (b);
 
     inline int _read(char* s)
     {
@@ -122,16 +103,19 @@ public:
         char* ptr = fh;
         while (isgraph(seekch())) {
             gc();
-            if (!isend())
+            if (*fh)
                 continue;
-            memcpy(s, ptr, fh - ptr);
-            s += fh - ptr;
-            ptr = fh;
+            cpy(s, ptr, fh)
             readbuf();
+            ptr = fh;
         };
+        if (fh != ptr) {
+            cpy(s, ptr, fh);
+        }
         *s = 0;
         return 1;
     }
+#undef cpy(a,b,c)
 
     inline int _read(char& ch)
     {
@@ -145,9 +129,10 @@ public:
     }
 
     ReadIOBase()
-        : ft(nullptr)
-        , fh(nullptr)
+        : ft(buf)
+        , fh(buf)
     {
+        buf[0] = buf[MAXBUF] = 0;
     }
 };
 class WriteIOBase {
