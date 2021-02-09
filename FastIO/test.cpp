@@ -4,7 +4,7 @@
 bool multi = 0;
 IO io;
 
-const int N = 1e3 + 5;
+const int N = 1e4 + 5;
 vector<int> v;
 vector<double> vd;
 ll a[N];
@@ -12,7 +12,7 @@ double db[N];
 char s[N];
 int suct;
 
-//#define useio
+#define useio
 
 void test1()
 {
@@ -158,13 +158,22 @@ void solve(int testcase)
 #endif //  useio
 }
 
+const char* path[]  = {
+    "",
+    "D:\\code\\vs\\C++_code\\FastIO\\data\\in1.txt",
+    "D:\\code\\vs\\C++_code\\FastIO\\data\\in2.txt",
+    "D:\\code\\vs\\C++_code\\FastIO\\data\\in3.txt",
+    "D:\\code\\vs\\C++_code\\FastIO\\data\\in4.txt",
+    "D:\\code\\vs\\C++_code\\FastIO\\data\\in5.txt"
+};
+
 int main(int argc, char** argv)
 {
     /*if (argc != 2)
         return printf("error argc: %d", argc);
     int tsc = atoi(argv[1]);*/
-    int tsc = 5;
-    freopen("D:\\code\\vs\\C++_code\\FastIO\\data\\in5.txt", "r", stdin);
+    int tsc = 3;
+    freopen(path[tsc], "r", stdin);
 
     int t;
     if (multi)

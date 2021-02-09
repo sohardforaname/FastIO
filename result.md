@@ -1,24 +1,24 @@
 # Use FastIO
 ## test1
 ### 1e7 32 bit integer, 103M
-about 550ms
-Speed:  187.2M/s
+about 350ms
+Speed:  294.2M/s
 ## test2
 ### 1e7 64bit double, 96M
-about 610ms
-Speed: 157.4M/s
+about 430ms
+Speed: 223.3M/s
 ## test3
-### string, length = 1e3, 1e4 times, 9.5M
-about 129ms
-Speed: 73.6M/s
+### string, length = 1e4, 1e4 times, 95.3M
+about 260ms
+Speed: 366.5M/s
 ## test4
 ### vector\<int\>, length = 1e3, 1e4 times, 94M
-about 520ms
-Speed: 180.7M/s
+about 400ms
+Speed: 235M/s
 ## test5
 ### vector\<double\>, length = 1e3, 1e4 times, 105M
-about 670ms
-Speed: 156.7M/s
+about 460ms
+Speed: 228.3M/s
 # Use Scanf
 ## test1
 ### 1e7 32 bit integer, 103M
@@ -29,9 +29,9 @@ Speed: 38.0M/s
 about 4860ms
 Speed: 19.8M/s
 ## test3
-### string, length = 1e3, 1e4 times, 9.5M
-about 86ms
-Speed: 110.5M/s
+### string, length = 1e4, 1e4 times, 95.3M
+about 889ms
+Speed: 107.1M/s
 ## test4
 ### vector\<int\>, length = 1e3, 1e4 times, 94M
 about 2710ms
