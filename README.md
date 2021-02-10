@@ -13,3 +13,7 @@ Optimize Branch and some function, decrease branch prediction.
 Use constant value pool to optimize speed of float parsing.
 
 Other Optimizations.
+
+## Release 1.0.3
+
+Fix some bugs.
