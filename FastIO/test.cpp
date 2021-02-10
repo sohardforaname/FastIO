@@ -1,8 +1,26 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+#define useio
+//#define usetestio
+
+#ifdef useio
 #include "IO.hpp"
+
+#elif defined(usetestio)
+#include <vector>
+#include "TestOtherIO.hpp"
+typedef long long ll;
+using namespace std;
+
+#endif
+
 #include <ctime>
 
 bool multi = 0;
+#ifdef useio
 IO io;
+
+#endif // useio
 
 const int N = 1e4 + 5;
 vector<int> v;
@@ -12,17 +30,24 @@ double db[N];
 char s[N];
 int suct;
 
-#define useio
+//#define useio
+#define usetestio
 
 void test1()
 {
-    int len = 1e7, a;
+    int len = 5e7, a;
 #ifdef useio
     for (int i = 1; i <= len; ++i)
         suct += io(a);
+
+#elif defined(usetestio)
+    for (int i = 1; i <= len; ++i)
+        suct += 1;
+
 #else
     for (int i = 1; i <= len; ++i)
         scanf("%d", &a);
+
 #endif
 }
 
@@ -33,6 +58,7 @@ void test2()
 #ifdef useio
     for (int i = 1; i <= len; ++i)
         suct += io(a);
+
 #else
     for (int i = 1; i <= len; ++i)
         suct += scanf("%lf", &a);
@@ -46,6 +72,7 @@ void test3()
     for (int i = 1; i <= len; ++i) {
         suct += io(s);
     }
+
 #else
     for (int i = 1; i <= len; ++i) {
         suct += scanf("%s", s);
@@ -59,6 +86,7 @@ void test4()
 #ifdef useio
     for (int i = 1; i <= len; ++i)
         suct += io(IO::make(v, sz));
+
 #else
     for (int i = 1; i <= len; ++i) {
         v.resize(sz);
@@ -74,6 +102,7 @@ void test5()
 #ifdef useio
     for (int i = 1; i <= len; ++i)
         suct += io(IO::make(vd, sz));
+
 #else
     for (int i = 1; i <= len; ++i) {
         vd.resize(sz);
@@ -137,6 +166,14 @@ void test5()
 #endif
 }*/
 
+void test() 
+{
+    freopen("D:\\aa.txt", "r", stdin);
+    char s[10];
+    io(s);
+    return;
+}
+
 void solve(int testcase)
 {
     clock_t s = clock();
@@ -148,8 +185,10 @@ void solve(int testcase)
         test3();
     else if (testcase == 4)
         test4();
-    else
+    else if (testcase == 5)
         test5();
+    else
+        test();
     printf("time: %d ms\n", clock() - s);
     printf("run function times: %d\n", suct);
 #ifdef useio
@@ -173,8 +212,9 @@ int main(int argc, char** argv)
     /*if (argc != 2)
         return printf("error argc: %d", argc);
     int tsc = atoi(argv[1]);*/
-    int tsc = 1;
-    freopen(path[tsc], "r", stdin);
+    int tsc = 6;
+    if (tsc < 6)
+        freopen(path[tsc], "r", stdin);
 
     int t;
     if (multi)

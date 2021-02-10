@@ -11,7 +11,7 @@ using namespace std;
 
 typedef long long ll;
 
-const double pow10minus[] = {
+const double pow10Minus[] = {
     1e-1, 1e-2, 1e-3, 1e-4, 1e-5, 1e-6, 1e-7, 1e-8, 1e-9, 1e-10,
     1e-11, 1e-12, 1e-13, 1e-14, 1e-15, 1e-16, 1e-17, 1e-18, 1e-19, 1e-20
 };
@@ -23,54 +23,56 @@ private:
     bool f;
     int iserr;
 
-    inline void readbuf()
+    inline void ReadBuf()
     {
         fh = buf;
-        *fh = 0;
         ft = fh + fread(buf, 1, MAXBUF, stdin);
+        *ft = 0;
         if (ft == fh)
             iserr = ferror(stdin);
     }
 
-    inline char gc()
+    inline int Gc()
     {
         return *fh++;
     }
 
-    inline char seekch()
+    inline int SeekCh()
     {
         if (*fh)
             return *fh;
-        readbuf();
+        ReadBuf();
         return *fh;
     }
 
-    inline void skipspace()
+    inline void SkipSpace()
     {
-        while (!isgraph(seekch()))
-            gc();
+        while (!IsGraph(SeekCh()))
+            Gc();
     }
 
 public:
     template <class T>
     inline int _read(T& x)
     {
-        f = 1;
-        skipspace();
-        char c = seekch();
-        if (c == '+' || c == '-') {
-            f = (c == '+');
-            c = gc();
-            if (!isdigit(seekch()))
+        SkipSpace();
+        char c = SeekCh();
+        if (IsDigit(c))
+        {
+            x = (Gc() ^ '0');
+            f = 1;
+        }
+        else if (c == '-' || c == '+') {
+            f = c == '-' ? 0 : 1; 
+            c = Gc();
+            if (!IsDigit(SeekCh()))
                 return 0;
             x = 0;
         } 
-        else if (isdigit(c))
-            x = gc() - '0';
         else
             return 0;
-        while (isdigit(seekch()))
-            x = (x << 3) + (x << 1) + gc() - '0';
+        while (IsDigit(SeekCh()))
+            x = (x << 3) + (x << 1) + (Gc() ^ '0');
         if (!f)
             x = ~x + 1;
         return 1;
@@ -82,14 +84,14 @@ public:
         if (!_read(inte))
             return 0;
         x = inte;
-        if (seekch() != '.')
+        if ((SeekCh() ^ '.'))
             return 1;
-        gc();
-        if (!isdigit(seekch()))
+        Gc();
+        if (!IsDigit(SeekCh()))
             return 0;
-        const double* p = pow10minus;
-        while (isdigit(seekch()))
-            f ? x += *(p++) * (gc() - '0') : x -= *(p++) * (gc() - '0');
+        const double* p = pow10Minus;
+        while (IsDigit(SeekCh()))
+            f ? x += *(p++) * (Gc() ^ '0') : x -= *(p++) * (Gc() ^ '0');
         return 1;
     }
 
@@ -99,14 +101,14 @@ public:
 
     inline int _read(char* s)
     {
-        skipspace();
+        SkipSpace();
         char* ptr = fh;
-        while (isgraph(seekch())) {
-            gc();
+        while (IsGraph(SeekCh())) {
+            Gc();
             if (*fh)
                 continue;
             cpy(s, ptr, fh)
-            readbuf();
+            ReadBuf();
             ptr = fh;
         };
         if (fh != ptr) {
@@ -119,7 +121,8 @@ public:
 
     inline int _read(char& ch)
     {
-        ch = gc();
+        SeekCh();
+        ch = Gc();
         return 1;
     }
 
@@ -131,6 +134,7 @@ public:
     ReadIOBase()
         : ft(buf)
         , fh(buf)
+        , f(1)
     {
         buf[0] = buf[MAXBUF] = 0;
     }
