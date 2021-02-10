@@ -1,10 +1,12 @@
 # FastIO
 
-An IO template used in programming contest. 
+An Head-Only IO template used in programming contest. 
 
 Test environment: i7-8750H, msvc release x86．
 
 See result.md for detailed test case and speed.
+
+Notice: The ReadIOSSE.hpp is developing, Don't use the header file!
 
 ## Release 1.0.2
 
