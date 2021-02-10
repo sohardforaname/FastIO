@@ -146,6 +146,7 @@
   <ItemGroup>
     <ClInclude Include="IO.hpp" />
     <ClInclude Include="ReadIOSSE.hpp" />
+    <ClInclude Include="TestOtherIO.hpp" />
     <ClInclude Include="type.h" />
   </ItemGroup>
   <ItemGroup>
