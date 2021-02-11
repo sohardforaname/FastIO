@@ -18,9 +18,6 @@
     <ClInclude Include="IO.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="type.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="ReadIOSSE.hpp">
       <Filter>头文件</Filter>
     </ClInclude>

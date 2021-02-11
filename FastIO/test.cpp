@@ -51,8 +51,9 @@ void test2()
     looptime = len;
     double a;
 
-    for (int i = 1; i <= len; ++i)
+    for (int i = 1; i <= len; ++i) {
         suct += io(a);
+    }
 }
 
 void test3()
@@ -85,8 +86,9 @@ void test5()
 
 void test() 
 {
-    char s[10];
-    io(s);
+    int len = 10, a;
+    for (int i = 1; i <= len; ++i)
+        suct += io(a);
     return;
 }
 
@@ -132,7 +134,9 @@ const char* path[]  = {
 
 int main(int argc, char** argv)
 {
-    int tsc = 3;
+    if (argc != 2)
+        exit(0);
+    int tsc = atoi(argv[1]);
     FILE* fp = NULL;
     if (tsc < 6)
         fp = freopen(path[tsc], "r", stdin);

@@ -79,7 +79,7 @@ public:
         return readElement;
     }
 
-    inline size_t IsEofOrError() const
+    inline pair<int, int> GetReadStatus() const
     {
         return rio.GetStatus();
     }
