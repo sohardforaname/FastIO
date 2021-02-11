@@ -1,159 +1,21 @@
 #define _CRT_SECURE_NO_WARNINGS
 #pragma once
 
+#include "ReadIOBase.hpp"
+#include "WriteIOBase.hpp"
 #include <vector>
-#include "type.h"
-#include <cstdio>
-#include <cstring>
 #include <tuple>
 
 using namespace std;
 
 typedef long long ll;
 
-const double pow10Minus[] = {
-    1e-1, 1e-2, 1e-3, 1e-4, 1e-5, 1e-6, 1e-7, 1e-8, 1e-9, 1e-10,
-    1e-11, 1e-12, 1e-13, 1e-14, 1e-15, 1e-16, 1e-17, 1e-18, 1e-19, 1e-20
-};
 
-class ReadIOBase {
-private:
-    static const size_t MAXBUF = 1 << 23;
-    char buf[MAXBUF + 1], *fh, *ft;
-    bool f;
-    int iserr;
-
-    inline void ReadBuf()
-    {
-        fh = buf;
-        ft = fh + fread(buf, 1, MAXBUF, stdin);
-        *ft = 0;
-        if (ft == fh)
-            iserr = ferror(stdin);
-    }
-
-    inline int Gc()
-    {
-        return *fh++;
-    }
-
-    inline int SeekCh()
-    {
-        if (*fh)
-            return *fh;
-        ReadBuf();
-        return *fh;
-    }
-
-    inline void SkipSpace()
-    {
-        while (!IsGraph(SeekCh()))
-            Gc();
-    }
-
-public:
-    template <class T>
-    inline int _read(T& x)
-    {
-        SkipSpace();
-        char c = SeekCh();
-        if (IsDigit(c))
-        {
-            x = (Gc() ^ '0');
-            f = 1;
-        }
-        else if (c == '-' || c == '+') {
-            f = c == '-' ? 0 : 1; 
-            c = Gc();
-            if (!IsDigit(SeekCh()))
-                return 0;
-            x = 0;
-        } 
-        else
-            return 0;
-        while (IsDigit(SeekCh()))
-            x = (x << 3) + (x << 1) + (Gc() ^ '0');
-        if (!f)
-            x = ~x + 1;
-        return 1;
-    }
-
-    inline int _read(double& x)
-    {
-        ll inte;
-        if (!_read(inte))
-            return 0;
-        x = inte;
-        if ((SeekCh() ^ '.'))
-            return 1;
-        Gc();
-        if (!IsDigit(SeekCh()))
-            return 0;
-        const double* p = pow10Minus;
-        while (IsDigit(SeekCh()))
-            f ? x += *(p++) * (Gc() ^ '0') : x -= *(p++) * (Gc() ^ '0');
-        return 1;
-    }
-
-#define cpy(a, b, c)            \
-    memcpy((a), (b), (c) - (b));\
-    (a) += (c) - (b);
-
-    inline int _read(char* s)
-    {
-        SkipSpace();
-        char* ptr = fh;
-        while (IsGraph(SeekCh())) {
-            Gc();
-            if (*fh)
-                continue;
-            cpy(s, ptr, fh)
-            ReadBuf();
-            ptr = fh;
-        };
-        if (fh != ptr) {
-            cpy(s, ptr, fh);
-        }
-        *s = 0;
-        return 1;
-    }
-#undef cpy(a,b,c)
-
-    inline int _read(char& ch)
-    {
-        SeekCh();
-        ch = Gc();
-        return 1;
-    }
-
-    int GetStatus() const
-    {
-        return iserr;
-    }
-
-    ReadIOBase()
-        : ft(buf)
-        , fh(buf)
-        , f(1)
-    {
-        buf[0] = buf[MAXBUF] = 0;
-    }
-};
-class WriteIOBase {
-
-public:
-    template <class T>
-    constexpr void _write(const T& x)
-    {
-        if (x > 9)
-            _write(x / 10);
-        putchar(x % 10 + '0');
-    }
-};
-
-class IO : public ReadIOBase, public WriteIOBase {
+class IO {
 
 private:
+    ReadIOBase rio;
+    WriteIOBase wio;
     size_t readElement;
 
 public:
@@ -161,7 +23,7 @@ public:
     template <class T>
     inline int operator()(T& x)
     {
-        return _read(x);
+        return rio._read(x);
     }
 
 private:
@@ -212,14 +74,19 @@ public:
         return (*this)(x) + (*this)(y...);
     }
 
-    size_t GetReadElement() const
+    inline size_t GetReadElement() const
     {
         return readElement;
     }
 
-    size_t IsEofOrError() const
+    inline size_t IsEofOrError() const
     {
-        return GetStatus();
+        return rio.GetStatus();
+    }
+
+    inline long long GetReadSize() const 
+    {
+        return rio.GetReadSize();
     }
 
 private:
@@ -238,7 +105,7 @@ public:
     {
         if (x < 0)
             putchar('-');
-        _write(x > 0 ? x : -x);
+        wio._write(x > 0 ? x : -x);
         putchar(ch);
     }
 

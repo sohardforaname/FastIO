@@ -7,5 +7,5 @@ constexpr bool IsGraph(const int ch)
 
 constexpr bool IsDigit(const int ch)
 {
-    return !(ch < 48 || ch > 57);
+    return !(ch > 57 || ch < 48);
 }
