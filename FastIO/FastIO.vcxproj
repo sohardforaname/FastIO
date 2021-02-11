@@ -152,7 +152,6 @@
     <ClInclude Include="ReadIOBase.hpp" />
     <ClInclude Include="ReadIOSSE.hpp" />
     <ClInclude Include="TestOtherIO.hpp" />
-    <ClInclude Include="type.h" />
     <ClInclude Include="WriteIOBase.hpp" />
   </ItemGroup>
   <ItemGroup>
