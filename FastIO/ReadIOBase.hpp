@@ -1,8 +1,8 @@
 #pragma once
 
-#include "type.h"
 #include <cstdio>
 #include <cstring>
+#include "type.h"
 
 const double pow10Minus[] = {
     1,
@@ -51,11 +51,13 @@ private:
     static const size_t MAXBUF = 1 << 23;
     char buf[MAXBUF + 1], *fh, *ft;
     int f, iserr;
+    long long readSize;
 
     inline void ReadBuf()
     {
         fh = buf;
         ft = fh + fread(buf, 1, MAXBUF, stdin);
+        readSize += ft - fh;
         *ft = 0;
         if (ft == fh)
             iserr = ferror(stdin);
@@ -169,10 +171,16 @@ public:
         return iserr;
     }
 
+    inline long long GetReadSize() const 
+    {
+        return readSize;
+    }
+
     ReadIOBase()
         : ft(buf)
         , fh(buf)
         , f(1)
+        , readSize(0)
     {
         buf[0] = buf[MAXBUF] = 0;
     }
