@@ -6,7 +6,7 @@
 
 using namespace std;
 
-const double pow10Minus[] = {
+static const double pow10Minus[] = {
     1,
     0.1,
     0.01,
@@ -164,7 +164,7 @@ public:
         *s = 0;
         return ptr != fh;
     }
-#undef cpy(a, b, c)
+#undef cpy
 
     inline int _read(char& ch) {
         ch = SeekCh();
@@ -180,20 +180,17 @@ public:
         return readSize;
     }
 
-    void reset()  {
-        new (this) ReadIOBase();
+    void reset() {
+        ft = buf;
+        fh = buf;
+        f = 1;
+        readSize = 0;
         iserr = 0;
         isok = 1;
+        buf[0] = buf[MAXBUF] = 0;
     }
 
-    ReadIOBase()
-        : ft(buf)
-        , fh(buf)
-        , f(1)
-        , readSize(0)
-        , iserr(0)
-        , isok(1)
-    {
-        buf[0] = buf[MAXBUF] = 0;
+    ReadIOBase() {
+        reset();
     }
 };

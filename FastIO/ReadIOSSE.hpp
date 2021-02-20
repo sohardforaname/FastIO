@@ -3,10 +3,11 @@
 #include <cstdio>
 #include <cstring>
 #include <utility>
+#include <intrin.h>
 
 using namespace std;
 
-const double pow10Minus[] = {
+static const double pow10Minus[] = {
     1,
     0.1,
     0.01,
@@ -48,7 +49,7 @@ const double minusPow10Minus[] = {
     -0.00000000000000001
 };
 
-class ReadIOBase {
+class ReadIOBase_SSE {
 private:
     static const size_t MAXBUF = 1 << 23;
     char buf[MAXBUF + 1], *fh, *ft;
@@ -153,8 +154,39 @@ public:
         return 1;
     }
 
+
+    inline void FastCopy(char* des, const char* src, size_t size) 
+    {
+        if (!(size >> 8)) {
+            memcpy(des, src, size);
+            return;
+        }
+        auto p = reinterpret_cast<const char*>(
+            (reinterpret_cast<size_t>(src) + 31) & (~31ll));
+
+        auto diff = p - src;
+        memcpy(des, src, diff);
+        des += diff;
+        src += diff;
+        size -= diff;
+        size_t tms = size >> 5;
+        
+        while (tms--) {
+            __m256i _src = _mm256_load_si256(reinterpret_cast<const __m256i*>(src));
+            _mm256_store_si256(reinterpret_cast<__m256i*>(des), _src);
+            des += 16;
+            src += 16;
+        }
+
+        memcpy(des, src, size & 0x1f);
+    }
+
 #define cpy(a, b, c)             \
     memcpy((a), (b), (c) - (b)); \
+    (a) += (c) - (b);
+
+#define cpy1(a, b, c)               \
+    FastCopy((a), (b), (c) - (b));  \
     (a) += (c) - (b);
 
     inline int _read(char* s)
@@ -165,7 +197,7 @@ public:
             Gc();
             if (*fh)
                 continue;
-            cpy(s, ptr, fh)
+            cpy1(s, ptr, fh)
                 ReadBuf();
             ptr = fh;
         };
@@ -175,7 +207,9 @@ public:
         *s = 0;
         return ptr != fh;
     }
-#undef cpy(a, b, c)
+
+#undef cpy
+#undef cpy1
 
     inline int _read(char& ch)
     {
@@ -196,19 +230,17 @@ public:
 
     void reset()
     {
-        new (this) ReadIOBase();
+        ft = buf;
+        fh = buf;
+        f = 1;
+        readSize = 0;
         iserr = 0;
         isok = 1;
+        buf[0] = buf[MAXBUF] = 0;
     }
 
-    ReadIOBase()
-        : ft(buf)
-        , fh(buf)
-        , f(1)
-        , readSize(0)
-        , iserr(0)
-        , isok(1)
+    ReadIOBase_SSE()
     {
-        buf[0] = buf[MAXBUF] = 0;
+        reset();
     }
 };

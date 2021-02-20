@@ -28,16 +28,12 @@ IO io;
 const int N = 1e4 + 5;
 vector<int> v;
 vector<double> vd;
-ll a[N];
+ll a[N], fileSize;
 double db[N];
 char s[N];
 int suct, looptime;
 
-//#define useio
-#define usetestio
-
-void test1()
-{
+void test1() {
     int len = 1e7, a;
     looptime = len;
 
@@ -45,8 +41,7 @@ void test1()
         suct += io(a);
 }
 
-void test2()
-{
+void test2() {
     int len = 1e7;
     looptime = len;
     double a;
@@ -56,8 +51,9 @@ void test2()
     }
 }
 
-void test3()
-{
+char buf[1 << 23], buf1[1 << 23];
+
+void test3() {
     int len = 1e4, sz = 1e4;
     looptime = len;
 
@@ -66,8 +62,7 @@ void test3()
     }
 }
 
-void test4()
-{
+void test4() {
     int len = 1e4, sz = 1e3;
     looptime = len;
 
@@ -75,8 +70,7 @@ void test4()
         suct += io(IO::make(v, sz));
 }
 
-void test5()
-{
+void test5() {
     int len = 1e4, sz = 1e3;
     looptime = len;
 
@@ -84,16 +78,16 @@ void test5()
         suct += io(IO::make(vd, sz));
 }
 
-void test() 
-{
-    int len = 10, a;
-    for (int i = 1; i <= len; ++i)
-        suct += io(a);
-    return;
+void test() {
+    int len = 1e7, a;
+    looptime = len;
+    fileSize = 98576811;
+
+    for (int i = 0; i != len; ++i)
+        suct += scanf("%d", &a);
 }
 
-void solve(int testcase)
-{
+void solve(int testcase) {
     auto st = steady_clock::now();
     switch (testcase) {
     case 1:
@@ -117,7 +111,10 @@ void solve(int testcase)
     auto ed = steady_clock::now();
     auto seg = duration_cast<milliseconds>(ed - st);
 
-    auto time = seg.count(), fileSize = io.GetReadSize();
+    auto time = seg.count();
+    /*if (testcase < 6) {
+        fileSize = io.GetReadSize();
+    }*/
     printf("time: %lld ms\nfile size: %lld KByte(s)\n", time, fileSize >> 10);
     printf("speed: %.1f M/s\n", (fileSize >> 20) * 1000.0 / time);
     printf("run function times: %d\n", suct);
@@ -132,16 +129,16 @@ const char* path[]  = {
     "D:\\code\\vs\\C++_code\\FastIO\\data\\in5.txt"
 };
 
-int main(int argc, char** argv)
-{
-    if (argc != 2)
+int main(int argc, char** argv) {
+    /*if (argc != 2)
         exit(0);
-    int tsc = atoi(argv[1]);
+    int tsc = atoi(argv[1]);*/
+    int tsc = 3;
     FILE* fp = NULL;
     if (tsc < 6)
         fp = freopen(path[tsc], "r", stdin);
     else
-        fp = freopen("D:\\aa.txt", "r", stdin);
+        fp = freopen("D:\\code\\vs\\C++_code\\FastIO\\data\\in1.txt", "r", stdin);
     
     int t;
     if (multi)
