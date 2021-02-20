@@ -51,8 +51,6 @@ void test2() {
     }
 }
 
-char buf[1 << 23], buf1[1 << 23];
-
 void test3() {
     int len = 1e4, sz = 1e4;
     looptime = len;
@@ -112,9 +110,9 @@ void solve(int testcase) {
     auto seg = duration_cast<milliseconds>(ed - st);
 
     auto time = seg.count();
-    /*if (testcase < 6) {
+    if (testcase < 6) {
         fileSize = io.GetReadSize();
-    }*/
+    }
     printf("time: %lld ms\nfile size: %lld KByte(s)\n", time, fileSize >> 10);
     printf("speed: %.1f M/s\n", (fileSize >> 20) * 1000.0 / time);
     printf("run function times: %d\n", suct);
