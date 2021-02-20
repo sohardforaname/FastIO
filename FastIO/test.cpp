@@ -33,7 +33,8 @@ double db[N];
 char s[N];
 int suct, looptime;
 
-void test1() {
+void test1()
+{
     int len = 1e7, a;
     looptime = len;
 
@@ -46,9 +47,8 @@ void test2() {
     looptime = len;
     double a;
 
-    for (int i = 1; i <= len; ++i) {
+    for (int i = 1; i <= len; ++i)
         suct += io(a);
-    }
 }
 
 void test3() {
