@@ -3,7 +3,6 @@
 #include <cstdio>
 #include <cstring>
 #include <utility>
-#include <intrin.h>
 
 using namespace std;
 
@@ -49,15 +48,14 @@ const double minusPow10Minus[] = {
     -0.00000000000000001
 };
 
-class ReadIOBase_SSE {
+class ReadIOBase {
 private:
     static const size_t MAXBUF = 1 << 23;
     char buf[MAXBUF + 1], *fh, *ft;
     int f, isok, iserr;
     long long readSize;
 
-    inline void ReadBuf()
-    {
+    inline void ReadBuf() {
         if (isok) {
             fh = buf;
             ft = fh + fread(buf, 1, MAXBUF, stdin);
@@ -70,44 +68,37 @@ private:
         }
     }
 
-    inline bool IsGraph(const int ch)
-    {
+    inline bool IsGraph(const int ch) {
         return !(ch < 33 || ch > 126);
     }
 
-    inline bool IsDigit(const int ch)
-    {
+    inline bool IsDigit(const int ch) {
         return !(ch > 57 || ch < 48);
     }
 
-    inline int Gc()
-    {
+    inline int Gc() {
         return *fh++;
     }
 
-    inline int SeekCh()
-    {
+    inline int SeekCh() {
         if (*fh)
             return *fh;
         ReadBuf();
         return isok ? *fh : 0;
     }
 
-    inline void SkipSpace()
-    {
+    inline void SkipSpace() {
         while (!IsGraph(SeekCh()) && isok)
             Gc();
     }
 
-    template <class T>
-    inline void StrToLL(T& x)
-    {
+    template<class T>
+    inline void StrToLL(T& x) {
         while (IsDigit(SeekCh()))
             x = (x << 3) + (x << 1) + (Gc() ^ '0');
     }
 
-    inline int PreCal()
-    {
+    inline int PreCal() {
         SkipSpace();
         char c = SeekCh();
         if (IsDigit(c)) {
@@ -124,8 +115,7 @@ private:
 
 public:
     template <class T>
-    inline int _read(T& x)
-    {
+    inline int _read(T& x) {
         if (!PreCal())
             return 0;
         x = 0;
@@ -135,8 +125,7 @@ public:
         return 1;
     }
 
-    inline int _read(double& x)
-    {
+    inline int _read(double& x) {
         if (!PreCal())
             return 0;
         long long tmpl = 0;
@@ -154,50 +143,18 @@ public:
         return 1;
     }
 
-
-    inline void FastCopy(char* des, const char* src, size_t size) 
-    {
-        if (!(size >> 8)) {
-            memcpy(des, src, size);
-            return;
-        }
-        auto p = reinterpret_cast<const char*>(
-            (reinterpret_cast<size_t>(src) + 31) & (~31ll));
-
-        auto diff = p - src;
-        memcpy(des, src, diff);
-        des += diff;
-        src += diff;
-        size -= diff;
-        size_t tms = size >> 5;
-        
-        while (tms--) {
-            __m256i _src = _mm256_load_si256(reinterpret_cast<const __m256i*>(src));
-            _mm256_store_si256(reinterpret_cast<__m256i*>(des), _src);
-            des += 16;
-            src += 16;
-        }
-
-        memcpy(des, src, size & 0x1f);
-    }
-
 #define cpy(a, b, c)             \
     memcpy((a), (b), (c) - (b)); \
     (a) += (c) - (b);
 
-#define cpy1(a, b, c)               \
-    FastCopy((a), (b), (c) - (b));  \
-    (a) += (c) - (b);
-
-    inline int _read(char* s)
-    {
+    inline int _read(char* s) {
         SkipSpace();
         char* ptr = fh;
         while (IsGraph(SeekCh())) {
             Gc();
             if (*fh)
                 continue;
-            cpy1(s, ptr, fh)
+            cpy(s, ptr, fh)
                 ReadBuf();
             ptr = fh;
         };
@@ -207,29 +164,23 @@ public:
         *s = 0;
         return ptr != fh;
     }
-
 #undef cpy
-#undef cpy1
 
-    inline int _read(char& ch)
-    {
+    inline int _read(char& ch) {
         ch = SeekCh();
         Gc();
         return isok & 1;
     }
 
-    inline pair<int, int> GetStatus() const
-    {
+    inline pair<int, int> GetStatus() const {
         return std::move(pair<int, int>(isok, iserr));
     }
 
-    inline long long GetReadSize() const
-    {
+    inline long long GetReadSize() const  {
         return readSize;
     }
 
-    void reset()
-    {
+    void reset() {
         ft = buf;
         fh = buf;
         f = 1;
@@ -239,8 +190,7 @@ public:
         buf[0] = buf[MAXBUF] = 0;
     }
 
-    ReadIOBase_SSE()
-    {
+    ReadIOBase() {
         reset();
     }
 };

@@ -135,6 +135,10 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
+      <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -145,9 +149,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="IO.hpp" />
+    <ClInclude Include="ReadIOBase.hpp" />
     <ClInclude Include="ReadIOSSE.hpp" />
     <ClInclude Include="TestOtherIO.hpp" />
-    <ClInclude Include="type.h" />
+    <ClInclude Include="WriteIOBase.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="test.cpp" />
