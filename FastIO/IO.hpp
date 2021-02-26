@@ -64,8 +64,8 @@ public:
 
     //input function that receives variable values
     template <class T, class... Ts>
-    inline int operator()(T& x, Ts&... y) {
-        return (*this)(x) + (*this)(y...);
+    inline int operator()(T&& x, Ts&&... y) {
+        return (*this)(forward<T>(x)) + (*this)(forward<Ts...>(y...));
     }
 
     inline size_t GetReadElement() const {

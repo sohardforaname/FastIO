@@ -131,7 +131,7 @@ int main(int argc, char** argv) {
     /*if (argc != 2)
         exit(0);
     int tsc = atoi(argv[1]);*/
-    int tsc = 3;
+    int tsc = 1;
     FILE* fp = NULL;
     if (tsc < 6)
         fp = freopen(path[tsc], "r", stdin);
