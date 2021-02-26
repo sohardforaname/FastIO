@@ -2,7 +2,7 @@
 
 An Head-Only IO template used in programming contest. 
 
-Test environment: i7-8750H, msvc release x86．
+Test environment: i7-8750H, msvc release x64．
 
 See result.md for detailed test case and speed.
 
@@ -17,5 +17,9 @@ Use constant value pool to optimize speed of float parsing.
 Other Optimizations.
 
 ## Release 1.0.3
+
+Fix some bugs.
+
+## Release 1.1.1
 
 Fix some bugs.
