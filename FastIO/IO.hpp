@@ -11,24 +11,25 @@ using namespace std;
 
 typedef long long ll;
 
-class IO {
+class ReadIO {
 
 private:
     ReadIOBase_SSE rio;
     //ReadIOBase rio;
-    WriteIOBase wio;
     size_t readElement;
 
 public:
     //input basic type
     template <class T>
-    inline int operator()(T& x) {
+    inline int operator()(T& x)
+    {
         return rio._read(x);
     }
 
 private:
     template <class T>
-    inline int getarray(T& arr, const size_t beg, const size_t end) {
+    inline int getarray(T& arr, const size_t beg, const size_t end)
+    {
         int rtv = -1;
         readElement = 0;
         for (size_t i = beg; i < end && rtv; ++i, ++readElement)
@@ -39,11 +40,13 @@ private:
 public:
     template <class T>
     static tuple<vector<T>&, size_t> make(
-        vector<T>& vec, size_t size) {
+        vector<T>& vec, size_t size)
+    {
         return make_tuple(ref(vec), size);
     }
     template <class T>
-    inline int operator()(tuple<vector<T>&, size_t> tp) {
+    inline int operator()(tuple<vector<T>&, size_t> tp)
+    {
         auto& vec = get<0>(tp);
         auto len = get<1>(tp);
 
@@ -54,33 +57,42 @@ public:
     //input a series of numbers and store them in an array
     template <class T>
     static tuple<T*, size_t, size_t> make(
-        T* arr, size_t beg, size_t end) {
+        T* arr, size_t beg, size_t end)
+    {
         return make_tuple(arr, beg, end);
     }
     template <class T>
-    inline int operator()(tuple<T*, size_t, size_t> tp) {
+    inline int operator()(tuple<T*, size_t, size_t> tp)
+    {
         return getarray(get<0>(tp), get<1>(tp), get<2>(tp));
     }
 
     //input function that receives variable values
     template <class T, class... Ts>
-    inline int operator()(T&& x, Ts&&... y) {
-        return (*this)(forward<T>(x)) + (*this)(forward<Ts...>(y...));
+    inline int operator()(T&& x, Ts&&... y)
+    {
+        return (*this)(forward<T>(x)) + (*this)(y...);
     }
 
-    inline size_t GetReadElement() const {
+    inline size_t GetReadElement() const
+    {
         return readElement;
     }
 
-    inline pair<int, int> GetReadStatus() const {
+    inline pair<int, int> GetReadStatus() const
+    {
         return rio.GetStatus();
     }
 
-    inline long long GetReadSize() const {
+    inline long long GetReadSize() const
+    {
         return rio.GetReadSize();
     }
+};
+class WriteIO {
 
 private:
+    WriteIOBase wio;
     size_t w;
 
 public:
@@ -130,7 +142,7 @@ public:
         putchar('\n');
     }
 
-    IO()
+    WriteIO()
         : w(6)
     {
     }
