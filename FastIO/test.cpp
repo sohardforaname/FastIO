@@ -21,7 +21,7 @@ using namespace chrono;
 
 bool multi = 0;
 #ifdef useio
-IO io;
+ReadIO io;
 
 #endif // useio
 
@@ -65,7 +65,7 @@ void test4() {
     looptime = len;
 
     for (int i = 1; i <= len; ++i)
-        suct += io(IO::make(v, sz));
+        suct += io(ReadIO::make(v, sz));
 }
 
 void test5() {
@@ -73,7 +73,7 @@ void test5() {
     looptime = len;
 
     for (int i = 1; i <= len; ++i)
-        suct += io(IO::make(vd, sz));
+        suct += io(ReadIO::make(vd, sz));
 }
 
 void test() {
